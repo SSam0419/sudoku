@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./index.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/f03c3defbc.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="sudoku">
+      <div class="sudoku__container">
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+        <div class="soduku__row"></div>
+      </div>
+      <div class="control-pannel">
+        <div class="control-pannel__subcontrol">
+          <button class="control-pannel__btn">New Game</button>
+          <select value="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+        <div class="control-pannel__subcontrol">
+          <div class="control-pannel__subcontrol__btns">
+            <button id="show-solution__btn">
+              <i class="fa-solid fa-lightbulb"></i>
+            </button>
+            <span>Solution</span>
+          </div>
+          <div class="control-pannel__subcontrol__btns">
+            <button id="submit__btn">
+              <i class="fa-solid fa-upload"></i>
+            </button>
+            <span>Submit</span>
+          </div>
+          <div class="control-pannel__subcontrol__btns">
+            <button id="redo__btn">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <span>Undo</span>
+          </div>
+          <div class="control-pannel__subcontrol__btns">
+            <button id="erase__btn">
+              <i class="fa-solid fa-eraser"></i>
+            </button>
+            <span>Erase</span>
+          </div>
+        </div>
+
+        <div class="number-pad">
+          <div class="number-pad__item">7</div>
+          <div class="number-pad__item">8</div>
+          <div class="number-pad__item">9</div>
+          <div class="number-pad__item">4</div>
+          <div class="number-pad__item">5</div>
+          <div class="number-pad__item">6</div>
+          <div class="number-pad__item">1</div>
+          <div class="number-pad__item">2</div>
+          <div class="number-pad__item">3</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
