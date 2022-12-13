@@ -13,7 +13,8 @@ var initialBo = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 const { solution, userWork, originalQuestion } = runMain();
-
+let activeCol;
+let activeRow;
 //check valid
 function isValid(bo, guess, row, col) {
   for (i = 0; i < 9; i++) {
@@ -47,7 +48,7 @@ function fillGrid(data) {
   for (let x = 0; x < 9; x++) {
     for (let y = 0; y < 9; y++) {
       if (Number(data[x][y]) == 0) {
-        for (let count = 0; count < 10; count++) {
+        for (let count = 0; count < 45; count++) {
           guess = Math.floor(Math.random() * 9) + 1;
           if (isValid(data, guess, x, y)) {
             data[x][y] = guess;
@@ -96,7 +97,10 @@ function generateBo(bo) {
   }
 
   const squares = document.querySelectorAll(".sudoku__squares");
-  squares.forEach((square, idx) =>
+  squares.forEach((square, idx) => {
+    let y = Math.floor(idx / 9);
+    let x = Math.floor(idx - y * 9);
+
     square.addEventListener("click", (e) => {
       activeSquare = document.querySelector(".sudoku__squares--active");
       if (activeSquare) {
@@ -107,6 +111,9 @@ function generateBo(bo) {
 
       row = Math.floor(idxClicked / 9);
       col = Math.floor(idxClicked - row * 9);
+
+      activeRow = row;
+      activeCol = col;
 
       delHighlightClass = document.querySelectorAll(".highlightSame");
       if (delHighlightClass) {
@@ -123,8 +130,8 @@ function generateBo(bo) {
       }
 
       square.classList.remove("highlightSame");
-    })
-  );
+    });
+  });
 }
 
 //
@@ -141,18 +148,15 @@ function handle(row, col, guess) {
   if (originalQuestion[row][col] !== 0) {
     return;
   }
-
-  squares = document.querySelectorAll(".sudoku__squares");
   index = col + row * 9;
-  squares[index].innerHTML = guess;
+  squares = document.querySelectorAll(".sudoku__squares");
+  squares[index].classList.remove("wrong_red");
 
-  if (isValid(userWork, guess, row, col)) {
-    squares[index].classList.remove("wrong_red");
-    squares[index].classList.add("right_blue");
-  } else {
+  if (!isValid(userWork, guess, row, col))
     squares[index].classList.add("wrong_red");
-    squares[index].classList.remove("right_blue");
-  }
+
+  squares[index].innerHTML = guess;
+  squares[index].classList.add("guess_input");
 
   userWork[row][col] = Number(guess);
 }
@@ -160,11 +164,14 @@ function handle(row, col, guess) {
 //main program
 function runMain() {
   function genGrid(bo) {
-    while (!fillGrid(bo)) {
-      fillGrid(bo);
+    for (let i = 0; i < 100; i++) {
+      if (fillGrid(bo)) {
+        generateBo(bo);
+        return bo;
+      }
     }
-    generateBo(bo);
-    return bo;
+
+    genGrid(bo);
   }
 
   const solution = genGrid(initialBo);
@@ -209,9 +216,21 @@ numbers.forEach((number) =>
   })
 );
 
+//clear initialBO
+function clearBoard() {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      initialBo[i][j] = 0;
+      userWork[i][j] = 0;
+      originalQuestion[i][j] = 0;
+    }
+  }
+}
+
 //new game
 new_game = document.querySelector(".control-pannel__btn");
 new_game.addEventListener("click", () => {
+  clearBoard();
   defaultBo = initialBo;
   //clear board
   rows = document.querySelectorAll(".soduku__row");
@@ -256,22 +275,29 @@ sol.addEventListener("click", () => {
 
 sub = document.querySelector("#submit__btn");
 sub.addEventListener("click", () => {
+  let correct = true;
+
   const squares = document.querySelectorAll(".sudoku__squares");
+
   for (let i = 0; i < squares.length; i++) {
     if (squares[i].innerHTML == " ") {
-      alert("You have not finish the sudoku yet! ");
+      // alert("You have not finish the sudoku yet! ");
       return;
+    } else if (squares[i].classList.contains("wrong_red")) {
+      alert("You have incorrect moves, please check again ");
+      // let y = Math.floor(i / 9);
+      // let x = Math.floor(i - y * 9);
+      // if (
+      //   !isValid(userWork, userWork[x][y], x, y) &&
+      //   originalQuestion[x][y] == 0
+      // ) {
+      //   squares[i].classList.add("wrong_red");
+      //   correct = false;
+      // }
     }
   }
 
-  confirm("Are you sure?");
-
-  for (let i = 0; i < squares.length; i++) {
-    if (squares[i].querySelector(".wrong_red")) {
-      alert("You still have some mistakes. Try again!");
-      return;
-    }
-  }
+  if (!correct) return;
 
   confirm(
     "Congrats! You did it! Now, go and start a new game with a harder sudoku!"
@@ -327,3 +353,47 @@ eraseBtn.addEventListener("click", () => {
   activeGrid.innerHTML = " ";
   userWork[eraseRow][eraseCol] = 0;
 });
+
+document.onkeydown = function (e) {
+  let number = e.code;
+  let inputSquare = document.querySelector(".sudoku__squares--active");
+  console.log("keydown");
+  console.log(e.code);
+
+  if (inputSquare) {
+    switch (number) {
+      case "Digit1":
+        console.log(1);
+        handle(activeRow, activeCol, 1);
+        break;
+      case "Digit2":
+        handle(activeRow, activeCol, 2);
+        break;
+      case "Digit3":
+        handle(activeRow, activeCol, 3);
+        break;
+      case "Digit4":
+        handle(activeRow, activeCol, 4);
+        break;
+      case "Digit5":
+        handle(activeRow, activeCol, 5);
+        break;
+      case "Digit6":
+        handle(activeRow, activeCol, 6);
+        break;
+      case "Digit7":
+        handle(activeRow, activeCol, 7);
+        break;
+      case "Digit8":
+        handle(activeRow, activeCol, 8);
+        break;
+      case "Digit9":
+        handle(activeRow, activeCol, 9);
+        break;
+      default:
+        return;
+    }
+  }
+
+  // use e.keyCode
+};

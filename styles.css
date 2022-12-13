@@ -183,11 +183,6 @@ select {
   background-color: var(--active_color);
 }
 
-.wrong_red {
-  color: red;
-  font-weight: bolder;
-}
-
 .right_blue {
   color: blue;
   font-weight: bolder;
@@ -195,4 +190,12 @@ select {
 
 .highlightSame {
   background-color: var(--active-hightlight_color);
+}
+
+.guess_input {
+  color: rgb(138, 138, 138);
+}
+.wrong_red {
+  color: red;
+  font-weight: bolder;
 }
