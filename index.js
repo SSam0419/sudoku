@@ -281,7 +281,7 @@ sub.addEventListener("click", () => {
 
   for (let i = 0; i < squares.length; i++) {
     if (squares[i].innerHTML == " ") {
-      // alert("You have not finish the sudoku yet! ");
+      alert("You have not finish the sudoku yet! ");
       return;
     } else if (squares[i].classList.contains("wrong_red")) {
       alert("You have incorrect moves, please check again ");
